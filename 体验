@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archer Pull Bow Animation</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0d0d0d;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    .archer-button {
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .archer-button:focus-visible {
+      outline: 2px solid rgba(235, 220, 190, 0.55);
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
+
+    .archer-stage {
+      position: relative;
+      width: 360px;
+      aspect-ratio: 3 / 4;
+    }
+
+    .archer-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* ------------------------
+       1. 身体层
+       去掉弓和箭，只保留人物主体
+       ------------------------ */
+    .archer-body {
+      z-index: 1;
+
+      clip-path: polygon(
+        31% 0%,
+        100% 0%,
+        100% 100%,
+        56% 100%,
+        56% 57%,
+        53% 57%,
+        53% 100%,
+        33% 100%,
+        33% 54%,
+        37% 54%,
+        37% 42%,
+        31% 42%
+      );
+
+      transform-origin: 52% 66%;
+    }
+
+    /* ------------------------
+       2. 弓层（左侧竖着）
+       ------------------------ */
+    .archer-bow {
+      z-index: 2;
+
+      clip-path: polygon(
+        10% 6%,
+        35% 6%,
+        39% 20%,
+        39% 84%,
+        30% 95%,
+        16% 92%,
+        10% 74%
+      );
+
+      transform-origin: 25% 50%;
+    }
+
+    /* ------------------------
+       3. 箭层（中间横着）
+       ------------------------ */
+    .archer-arrow {
+      z-index: 3;
+
+      clip-path: polygon(
+        0% 38%,
+        64% 38%,
+        70% 45%,
+        64% 52%,
+        0% 52%
+      );
+
+      transform-origin: 34% 45%;
+    }
+
+    /* 默认静止 */
+    .archer-body,
+    .archer-bow,
+    .archer-arrow {
+      transform: translate(0, 0) rotate(0deg);
+    }
+
+    /* 点击后播放动画 */
+    .archer-stage.is-pulling .archer-body {
+      animation: bodyPull 2.6s ease-in-out;
+    }
+
+    .archer-stage.is-pulling .archer-bow {
+      animation: bowForward 2.6s ease-in-out;
+    }
+
+    .archer-stage.is-pulling .archer-arrow {
+      animation: arrowBack 2.6s ease-in-out;
+    }
+
+    /* 身体轻微后仰、后移 */
+    @keyframes bodyPull {
+      0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+      }
+
+      25% {
+        transform: translateX(-4px) translateY(-1px) rotate(-0.8deg);
+      }
+
+      45% {
+        transform: translateX(-8px) translateY(-2px) rotate(-1.8deg);
+      }
+
+      58% {
+        transform: translateX(-10px) translateY(-2px) rotate(-2.4deg);
+      }
+
+      72% {
+        transform: translateX(-10px) translateY(-2px) rotate(-2.4deg);
+      }
+
+      84% {
+        transform: translateX(-4px) translateY(-1px) rotate(-0.8deg);
+      }
+
+      100% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+      }
+    }
+
+    /* 弓轻微往前 */
+    @keyframes bowForward {
+      0% {
+        transform: translateX(0) rotate(0deg);
+      }
+
+      25% {
+        transform: translateX(2px) rotate(0.2deg);
+      }
+
+      45% {
+        transform: translateX(5px) rotate(0.6deg);
+      }
+
+      58% {
+        transform: translateX(8px) rotate(1deg);
+      }
+
+      72% {
+        transform: translateX(8px) rotate(1deg);
+      }
+
+      84% {
+        transform: translateX(2px) rotate(0.2deg);
+      }
+
+      100% {
+        transform: translateX(0) rotate(0deg);
+      }
+    }
+
+    /* 箭往后拉 */
+    @keyframes arrowBack {
+      0% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      45% {
+        transform: translateX(-11px);
+      }
+
+      58% {
+        transform: translateX(-18px);
+      }
+
+      72% {
+        transform: translateX(-18px);
+      }
+
+      84% {
+        transform: translateX(-6px);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .archer-stage {
+        width: 250px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .archer-stage.is-pulling .archer-body,
+      .archer-stage.is-pulling .archer-bow,
+      .archer-stage.is-pulling .archer-arrow {
+        animation-duration: 0.01ms;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button
+    class="archer-button"
+    id="archerButton"
+    type="button"
+    aria-label="Play archer pull animation"
+  >
+    <div class="archer-stage" id="archerStage">
+
+      <!-- 身体 -->
+      <img
+        src="/images/archer-icon.png"
+        alt="Rock art archer icon"
+        class="archer-layer archer-body"
+      />
+
+      <!-- 弓 -->
+      <img
+        src="/images/archer-icon.png"
+        alt=""
+        aria-hidden="true"
+        class="archer-layer archer-bow"
+      />
+
+      <!-- 箭 -->
+      <img
+        src="/images/archer-icon.png"
+        alt=""
+        aria-hidden="true"
+        class="archer-layer archer-arrow"
+      />
+
+    </div>
+  </button>
+
+  <script>
+    const archerButton = document.getElementById("archerButton");
+    const archerStage = document.getElementById("archerStage");
+
+    function playPullAnimation() {
+      archerStage.classList.remove("is-pulling");
+
+      /* 强制重绘，保证每次点击都能重新播放 */
+      void archerStage.offsetWidth;
+
+      archerStage.classList.add("is-pulling");
+    }
+
+    archerButton.addEventListener("click", playPullAnimation);
+
+    archerStage.addEventListener("animationend", () => {
+      archerStage.classList.remove("is-pulling");
+    });
+  </script>
+
+</body>
+</html>
