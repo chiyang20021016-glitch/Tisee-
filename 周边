@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Branch Click Sway Animation</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background: #0d0d0d;
+    }
+
+    /* =========================
+       图标按钮
+       ========================= */
+
+    .branch-button {
+      border: none;
+      background: transparent;
+
+      padding: 0;
+      margin: 0;
+
+      cursor: pointer;
+
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+
+      outline: none;
+    }
+
+    .branch-button:focus-visible {
+      outline: 2px solid rgba(235, 220, 190, 0.6);
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
+
+    /* =========================
+       图标本身
+       ========================= */
+
+    .branch-icon {
+      width: 300px;
+      max-width: 70vw;
+
+      height: auto;
+
+      display: block;
+
+      /*
+        关键：
+        以图标底部偏中的位置作为支点
+        这样看起来像植物/枝杈扎在地上左右摇
+      */
+      transform-origin: 50% 91%;
+
+      user-select: none;
+      -webkit-user-drag: none;
+
+      /*
+        默认完全静止
+      */
+      transform: rotate(0deg);
+    }
+
+    /* =========================
+       点击后触发
+       ========================= */
+
+    .branch-icon.is-swaying {
+      animation: branchSway 1.8s ease-in-out;
+    }
+
+    /* =========================
+       摇晃动画
+       ========================= */
+
+    @keyframes branchSway {
+
+      /* 初始状态 */
+      0% {
+        transform: rotate(0deg);
+      }
+
+      /* 第一次往左 */
+      15% {
+        transform: rotate(-8deg);
+      }
+
+      /* 往右 */
+      30% {
+        transform: rotate(6deg);
+      }
+
+      /* 再往左一点 */
+      45% {
+        transform: rotate(-5deg);
+      }
+
+      /* 再往右一点 */
+      60% {
+        transform: rotate(4deg);
+      }
+
+      /* 最后轻微回摆 */
+      75% {
+        transform: rotate(-2deg);
+      }
+
+      /* 回到原位 */
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    /* =========================
+       Hover
+       ========================= */
+
+    @media (hover: hover) and (pointer: fine) {
+      .branch-button:hover .branch-icon {
+        filter: brightness(1.04);
+      }
+    }
+
+    /* =========================
+       手机端
+       ========================= */
+
+    @media (max-width: 768px) {
+      .branch-icon {
+        width: 220px;
+      }
+    }
+
+    /* =========================
+       减少动画偏好
+       ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+      .branch-icon.is-swaying {
+        animation-duration: 0.01ms;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button
+    class="branch-button"
+    id="branchButton"
+    type="button"
+    aria-label="Animate branch icon"
+  >
+
+    <img
+      src="/images/branch-icon.png"
+      alt="Rock art branch icon"
+      class="branch-icon"
+      id="branchIcon"
+    />
+
+  </button>
+
+
+  <script>
+
+    const button =
+      document.getElementById("branchButton");
+
+    const icon =
+      document.getElementById("branchIcon");
+
+
+    /*
+      点击图标时播放摇晃动画
+    */
+    button.addEventListener("click", () => {
+
+      /*
+        先移除动画 class
+        保证每次点击都可以重新播放
+      */
+      icon.classList.remove("is-swaying");
+
+      /*
+        强制浏览器重新计算一次
+      */
+      void icon.offsetWidth;
+
+      /*
+        再加回来，重新播放动画
+      */
+      icon.classList.add("is-swaying");
+
+    });
+
+
+    /*
+      动画播放结束后，
+      移除 class，让图标恢复普通静止状态
+    */
+    icon.addEventListener("animationend", () => {
+
+      icon.classList.remove("is-swaying");
+
+    });
+
+  </script>
+
+</body>
+</html>
