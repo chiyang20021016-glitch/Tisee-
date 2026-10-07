@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Icon Squish Animation</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #191713;
+    }
+
+    /* =========================
+       ICON BUTTON
+       ========================= */
+
+    .rock-icon-button {
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin: 0;
+
+      cursor: pointer;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      outline: none;
+    }
+
+    .rock-icon-button:focus-visible {
+      outline: 2px solid rgba(238, 226, 201, 0.65);
+      outline-offset: 8px;
+      border-radius: 8px;
+    }
+
+    /* =========================
+       ICON
+       ========================= */
+
+    .rock-icon {
+      width: 320px;
+      max-width: 70vw;
+      height: auto;
+
+      display: block;
+
+      /*
+        关键：
+        图标从自己的正中心进行挤压和回弹
+      */
+      transform-origin: 50% 50%;
+      transform-box: border-box;
+
+      user-select: none;
+      -webkit-user-drag: none;
+
+      transition: filter 0.2s ease;
+    }
+
+    /* =========================
+       HOVER
+       ========================= */
+
+    @media (hover: hover) and (pointer: fine) {
+      .rock-icon-button:hover .rock-icon {
+        filter: brightness(1.04);
+      }
+    }
+
+    /* =========================
+       CLICK ANIMATION
+       ========================= */
+
+    .rock-icon.is-squishing {
+      animation: rockIconSquish 0.68s
+        cubic-bezier(0.22, 0.72, 0.2, 1);
+    }
+
+    @keyframes rockIconSquish {
+
+      /* 原始状态 */
+      0% {
+        transform:
+          scaleX(1)
+          scaleY(1);
+      }
+
+      /*
+        第一次明显向内挤压
+        左右压缩到 78%
+        同时稍微向上撑高
+      */
+      20% {
+        transform:
+          scaleX(0.78)
+          scaleY(1.09);
+      }
+
+      /*
+        第一次回弹
+      */
+      42% {
+        transform:
+          scaleX(1.04)
+          scaleY(0.98);
+      }
+
+      /*
+        第二次轻微收缩
+      */
+      64% {
+        transform:
+          scaleX(0.92)
+          scaleY(1.03);
+      }
+
+      /*
+        恢复原状
+      */
+      100% {
+        transform:
+          scaleX(1)
+          scaleY(1);
+      }
+    }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @media (max-width: 768px) {
+      .rock-icon {
+        width: 220px;
+      }
+    }
+
+    /* =========================
+       REDUCED MOTION
+       ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+      .rock-icon.is-squishing {
+        animation-duration: 0.01ms;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button
+    class="rock-icon-button"
+    id="rockIconButton"
+    type="button"
+    aria-label="Animate rock art icon"
+  >
+
+    <img
+      src="/images/rock-icon.png"
+      alt="Rock art icon"
+      class="rock-icon"
+      id="rockIcon"
+    />
+
+  </button>
+
+  <script>
+    const button =
+      document.getElementById("rockIconButton");
+
+    const icon =
+      document.getElementById("rockIcon");
+
+    button.addEventListener("click", () => {
+
+      /*
+        先移除动画 class，
+        保证每次点击都可以重新播放
+      */
+      icon.classList.remove("is-squishing");
+
+      /*
+        强制浏览器重新计算布局
+      */
+      void icon.offsetWidth;
+
+      /*
+        再重新添加动画
+      */
+      icon.classList.add("is-squishing");
+    });
+
+    icon.addEventListener("animationend", () => {
+
+      /*
+        动画完成以后恢复普通状态
+      */
+      icon.classList.remove("is-squishing");
+    });
+  </script>
+
+</body>
+</html>
