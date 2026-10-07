@@ -1,0 +1,243 @@
+Please redesign ONLY the existing website Header / Navbar area.
+
+Do NOT change the rest of the page.
+
+Use the existing Header/Navbar component and keep:
+- existing logo position
+- existing navigation structure
+- existing links
+- existing spacing/layout logic
+- existing responsive/mobile behavior
+- all page content below the header
+
+Do not rebuild the header from scratch.
+
+A rock texture image already exists at:
+
+/public/images/rock-texture.jpg
+
+Use this image only as the visual background texture for the Header/Navbar.
+
+VISUAL GOAL
+
+The header should visually match the existing Tibetan rock-art icon system used on the website.
+
+The existing icons have:
+- muted warm brown / ochre strokes
+- dusty hand-drawn texture
+- archaeological / ancient visual language
+- soft grain
+- low saturation
+- weathered rock-art feeling
+
+The header should support these icons instead of competing with them.
+
+Do NOT make the header look photorealistic.
+
+The final surface should feel like:
+- dark grey-brown weathered stone
+- matte and dusty
+- softly blurred
+- granular
+- slightly uneven
+- archaeological
+- aged
+- natural
+
+Avoid:
+- sharp realistic rock photography
+- marble
+- polished stone
+- concrete
+- dramatic cave lighting
+- fantasy game stone walls
+- artificial digital noise
+- high contrast cracks
+- glossy effects
+
+
+BACKGROUND IMAGE
+
+Use:
+
+background-image: url('/images/rock-texture.jpg');
+background-size: cover;
+background-repeat: no-repeat;
+
+Choose a background-position that keeps visually useful stone texture visible.
+
+Do not zoom/crop the image too aggressively.
+
+Because the source image may be too photographic, soften it visually using overlays rather than changing the image itself.
+
+
+DARK WARM OVERLAY
+
+Add a warm dark overlay above the rock image:
+
+rgba(24, 22, 20, 0.45)
+
+The stone surface should remain visible underneath.
+
+The result should be low contrast and soft.
+
+
+SOFT WEATHERING / BLUR EFFECT
+
+Add subtle CSS layers to make the rock texture feel less photographic.
+
+Use:
+- very subtle blur-like softness through translucent overlays
+- low-opacity gradients
+- muted contrast
+- slightly warm brown tint
+
+Do not blur navigation text or logo.
+
+Only visually soften the background layers.
+
+
+GRAIN
+
+Add a subtle embedded grain layer using ::before or ::after.
+
+The grain should feel like small particles inside the stone surface.
+
+Use:
+- tiny warm light particles
+- tiny dark particles
+- irregular spacing
+- different particle sizes
+- very low opacity
+
+Avoid uniform film grain.
+
+It should not look animated.
+
+It should feel like dusty stone particles.
+
+
+IRREGULAR WEATHERING
+
+Add subtle irregular radial gradients.
+
+For example:
+- soft darker patch near one side
+- soft warmer patch near another side
+- slight unevenness across the header
+
+Keep opacity very low.
+
+The goal is natural weathering, not dramatic lighting.
+
+
+COLOR RELATIONSHIP WITH ROCK-ART ICONS
+
+The header needs to visually match the existing brown rock-art icons.
+
+Suggested palette:
+
+Background:
+#26221f
+#302a25
+#3b332d
+
+Warm stone undertone:
+#6e5845
+#7b624b
+
+Navigation text:
+#eee2c9
+rgba(240, 227, 200, 0.9)
+
+Hover:
+#f6ead0
+
+The overall background should remain darker than the rock-art icons so the icons stay readable.
+
+
+NAVIGATION TEXT
+
+Keep existing typography unless changing color is necessary.
+
+Use a warm sandstone/off-white color:
+
+rgba(240, 227, 200, 0.9)
+
+Text should remain highly readable.
+
+
+NAVIGATION HOVER
+
+Add only a subtle hover effect.
+
+On hover:
+- slightly brighten text
+- reveal a thin underline
+- underline animates left to right
+
+The underline should look understated, like a small carved or painted rock-art line.
+
+Example thickness:
+1px
+
+Avoid large modern UI animations.
+
+
+HEADER DEPTH
+
+Add a subtle inset shadow near the bottom:
+
+box-shadow:
+inset 0 -1px 0 rgba(255,255,255,0.04),
+inset 0 -8px 20px rgba(0,0,0,0.12);
+
+Do not use strong external drop shadows.
+
+
+IMPORTANT LAYERING
+
+Structure the Header visually like:
+
+rock image
+↓
+warm dark overlay
+↓
+subtle weathering gradients
+↓
+subtle grain layer
+↓
+logo + navigation content
+
+Make sure the pseudo-elements stay behind the navigation content.
+
+Use:
+position: relative;
+isolation: isolate;
+
+and appropriate z-index values.
+
+
+MOBILE
+
+Preserve the existing mobile navigation behavior.
+
+On smaller screens:
+- keep the rock texture visible
+- use a less aggressive background crop
+- keep text/buttons readable
+- do not change the existing menu logic
+
+Consider changing only background-position on mobile if needed.
+
+
+TECHNICAL CONSTRAINTS
+
+- Prefer pure CSS
+- Do not install libraries
+- Do not modify unrelated files
+- Do not rebuild Header/Navbar
+- Reuse existing Header component and class names
+- Inspect the current Header/Navbar code first
+- Adapt the effect to the existing project structure
+- Keep changes minimal and isolated
