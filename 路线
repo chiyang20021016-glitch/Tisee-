@@ -1,0 +1,606 @@
+I already have an existing frontend project. Please MODIFY the current project instead of rebuilding the page from scratch.
+
+Your task is to replace the existing deer icon/illustration on the homepage with a new interactive running-deer component, while preserving the current page structure, layout, spacing, navigation, typography, and all unrelated interactions.
+
+IMPORTANT:
+- Do NOT redesign the entire homepage.
+- Do NOT remove or rewrite unrelated components.
+- Do NOT change the existing layout unless necessary for integrating the deer.
+- Keep the deer in approximately the same position and size as the current deer icon.
+- The deer should run IN PLACE. It should NOT move across the screen.
+- There should be NO route/path animation.
+- The body should remain visually connected as one complete animal.
+- Only the four legs should create the main running motion.
+- The body can move slightly up and down to make the running feel more natural.
+- The final interaction should feel subtle, organic, hand-drawn, and suitable for a Tibetan petroglyph-inspired visual language.
+
+The deer assets are prepared as 5 transparent PNG layers:
+
+/public/deer-run/deer_body.png
+/public/deer-run/hind_back.png
+/public/deer-run/hind_front.png
+/public/deer-run/front_back.png
+/public/deer-run/front_front.png
+
+Please create the following reusable component:
+
+src/components/DeerRun.jsx
+
+Use this component structure:
+
+--------------------------------------------------
+
+import "./DeerRun.css";
+
+const ASSET_PATH = "/deer-run/";
+
+export default function DeerRun({
+  size = 420,
+  running = false,
+  speed = 0.54,
+  className = "",
+}) {
+  return (
+    <div
+      className={`deer-run ${running ? "is-running" : ""} ${className}`}
+      style={{
+        "--deer-size": `${size}px`,
+        "--run-speed": `${speed}s`,
+      }}
+      role="img"
+      aria-label="Running deer"
+    >
+      <div className="deer-stage">
+
+        <img
+          className="deer-part deer-body"
+          src={`${ASSET_PATH}deer_body.png`}
+          alt=""
+        />
+
+        <img
+          className="deer-part deer-leg hind-back"
+          src={`${ASSET_PATH}hind_back.png`}
+          alt=""
+        />
+
+        <img
+          className="deer-part deer-leg hind-front"
+          src={`${ASSET_PATH}hind_front.png`}
+          alt=""
+        />
+
+        <img
+          className="deer-part deer-leg front-back"
+          src={`${ASSET_PATH}front_back.png`}
+          alt=""
+        />
+
+        <img
+          className="deer-part deer-leg front-front"
+          src={`${ASSET_PATH}front_front.png`}
+          alt=""
+        />
+
+      </div>
+    </div>
+  );
+}
+
+--------------------------------------------------
+
+Then create:
+
+src/components/DeerRun.css
+
+Use this CSS as the base implementation:
+
+--------------------------------------------------
+
+.deer-run {
+  position: relative;
+  width: min(var(--deer-size, 420px), 100%);
+  aspect-ratio: 699 / 502;
+  display: inline-block;
+  overflow: visible;
+}
+
+.deer-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 60%;
+  will-change: transform;
+}
+
+.deer-part {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.deer-leg {
+  will-change: transform;
+}
+
+
+/* LEG PIVOTS */
+
+.hind-back {
+  transform-origin: 16.8% 56.3%;
+}
+
+.hind-front {
+  transform-origin: 25% 56.8%;
+}
+
+.front-back {
+  transform-origin: 56.5% 56.8%;
+}
+
+.front-front {
+  transform-origin: 61.8% 57.3%;
+}
+
+
+/* BODY MOVEMENT */
+
+.is-running .deer-stage {
+  animation:
+    deer-body-bounce
+    calc(var(--run-speed) * 0.5)
+    ease-in-out
+    infinite;
+}
+
+
+/* DIAGONAL LEG PAIR A */
+
+.is-running .hind-back,
+.is-running .front-front {
+  animation:
+    deer-leg-a
+    var(--run-speed)
+    ease-in-out
+    infinite;
+}
+
+
+/* DIAGONAL LEG PAIR B */
+
+.is-running .hind-front,
+.is-running .front-back {
+  animation:
+    deer-leg-b
+    var(--run-speed)
+    ease-in-out
+    infinite;
+}
+
+
+/* LEG ANIMATION A */
+
+@keyframes deer-leg-a {
+
+  0% {
+    transform:
+      rotate(-5deg)
+      translateY(0);
+  }
+
+  20% {
+    transform:
+      rotate(16deg)
+      translateY(2%);
+  }
+
+  40% {
+    transform:
+      rotate(5deg)
+      translateY(-1%);
+  }
+
+  60% {
+    transform:
+      rotate(-16deg)
+      translateY(-2%);
+  }
+
+  80% {
+    transform:
+      rotate(-8deg)
+      translateY(1%);
+  }
+
+  100% {
+    transform:
+      rotate(-5deg)
+      translateY(0);
+  }
+}
+
+
+/* LEG ANIMATION B */
+
+@keyframes deer-leg-b {
+
+  0% {
+    transform:
+      rotate(10deg)
+      translateY(-1%);
+  }
+
+  20% {
+    transform:
+      rotate(-12deg)
+      translateY(-2%);
+  }
+
+  40% {
+    transform:
+      rotate(-5deg)
+      translateY(1%);
+  }
+
+  60% {
+    transform:
+      rotate(16deg)
+      translateY(2%);
+  }
+
+  80% {
+    transform:
+      rotate(8deg)
+      translateY(0);
+  }
+
+  100% {
+    transform:
+      rotate(10deg)
+      translateY(-1%);
+  }
+}
+
+
+/* BODY BOUNCE */
+
+@keyframes deer-body-bounce {
+
+  0% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+  25% {
+    transform:
+      translateY(-1.2%)
+      rotate(-0.3deg);
+  }
+
+  50% {
+    transform:
+      translateY(0.4%)
+      rotate(0deg);
+  }
+
+  75% {
+    transform:
+      translateY(-0.9%)
+      rotate(0.25deg);
+  }
+
+  100% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+}
+
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .is-running .deer-stage,
+  .is-running .deer-leg {
+    animation: none !important;
+  }
+
+}
+
+--------------------------------------------------
+
+Now integrate the component into the EXISTING homepage.
+
+Find the current deer icon/image/component.
+
+For example, if the current code is something like:
+
+<img src="/deer.png" />
+
+or
+
+<DeerIcon />
+
+replace ONLY that deer element.
+
+Add:
+
+import { useState } from "react";
+import DeerRun from "./components/DeerRun";
+
+Then inside the existing page component:
+
+const [deerRunning, setDeerRunning] = useState(false);
+
+Replace the old deer with:
+
+--------------------------------------------------
+
+<button
+  className="deer-button"
+  onClick={() => setDeerRunning((prev) => !prev)}
+  aria-label="Toggle deer running animation"
+>
+  <DeerRun
+    size={420}
+    running={deerRunning}
+    speed={0.54}
+  />
+</button>
+
+--------------------------------------------------
+
+Add this button style to the most appropriate existing stylesheet:
+
+--------------------------------------------------
+
+.deer-button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deer-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+}
+
+--------------------------------------------------
+
+INTERACTION REQUIREMENTS:
+
+1. Default state:
+The deer is static.
+
+2. First click:
+The deer begins running in place.
+
+3. Second click:
+The deer stops running.
+
+4. Do not translate the whole deer horizontally.
+The deer must stay anchored in its original location.
+
+5. Four-leg movement:
+All four legs must participate in the running cycle.
+
+Use diagonal pairs:
+- hind-back + front-front
+- hind-front + front-back
+
+The two groups should move in opposite phases.
+
+6. Body:
+The body should NOT split apart.
+It may only:
+- move slightly up and down
+- rotate extremely subtly
+
+7. Do NOT animate:
+- antlers separately
+- head separately
+- torso separately
+- tail separately
+
+The upper deer should feel like one continuous hand-drawn silhouette.
+
+8. Motion quality:
+Avoid mechanical pendulum movement.
+The motion should resemble a stylised running/galloping rhythm.
+
+If necessary, refine the keyframes slightly so that:
+- front legs visually reach forward
+- rear legs visually push backward
+- legs pass through a compressed middle pose
+- the deer has a subtle bounce at faster leg transitions
+
+However:
+Do not exaggerate the motion to the point where the petroglyph shape becomes distorted.
+
+9. Target speed:
+Start with:
+
+speed={0.54}
+
+This should feel like a moderate running pace.
+
+Allow speed to remain configurable.
+
+Suggested range:
+
+0.42 = fast
+0.54 = normal
+0.70 = slow
+
+
+VISUAL STYLE REQUIREMENTS:
+
+The existing project is moving toward a Tibetan petroglyph / rock-art inspired visual system.
+
+The deer must therefore preserve:
+- handmade quality
+- imperfect organic linework
+- primitive rock-art character
+- earthy / historical atmosphere
+- non-polished illustration feeling
+
+Do NOT:
+- convert it into a modern flat vector icon
+- replace it with an emoji
+- use Lucide / FontAwesome / Material icon
+- redraw it as a generic deer
+- apply glossy effects
+- apply 3D effects
+- apply neon effects
+- apply cartoon styling
+
+The supplied deer artwork is the final visual source.
+
+
+IMPORTANT INTEGRATION RULE:
+
+Please inspect the current project before modifying files.
+
+Do not assume file locations.
+
+Find:
+- the homepage component
+- the current deer element
+- the current stylesheet or styling method
+- whether the project uses React, Next.js, Vite, Tailwind, CSS Modules, or another structure
+
+Then adapt the implementation to the current project conventions.
+
+For example:
+
+If the project uses CSS Modules:
+convert DeerRun.css into DeerRun.module.css.
+
+If the project uses Tailwind:
+you may still keep the animation keyframes in a dedicated CSS file if that is cleaner.
+
+If the project uses Next.js:
+make sure client-side state works correctly.
+Add "use client" only if actually required.
+
+Do NOT introduce unnecessary dependencies.
+
+Use only:
+- React
+- CSS
+- existing project dependencies
+
+
+RESPONSIVE REQUIREMENTS:
+
+The deer must scale correctly on desktop and mobile.
+
+Do not hard-code width in a way that breaks smaller screens.
+
+Preserve the surrounding layout.
+
+Suggested behaviour:
+
+Desktop:
+use the approximate size of the current deer.
+
+Tablet:
+reduce naturally with the container.
+
+Mobile:
+max-width: 100%.
+
+Do not let the deer overflow the viewport.
+
+
+ACCESSIBILITY:
+
+The clickable deer must be keyboard accessible.
+
+Use a real <button> rather than an onClick div.
+
+Keep:
+
+aria-label="Toggle deer running animation"
+
+Support prefers-reduced-motion.
+
+
+VERY IMPORTANT:
+
+Before making edits:
+1. inspect the current codebase
+2. identify the current deer
+3. identify the homepage structure
+4. identify how styles are currently managed
+
+Then make the smallest clean change needed.
+
+Do not rebuild the project.
+
+Do not change unrelated content.
+
+Do not change text.
+
+Do not change navigation.
+
+Do not remove any existing animation unless it directly conflicts with the deer.
+
+Do not change the global color palette.
+
+Do not change page spacing unless needed to preserve the original deer position.
+
+
+AFTER IMPLEMENTATION:
+
+Please verify:
+
+- the app compiles
+- there are no missing imports
+- all 5 deer PNG assets load correctly
+- static state works
+- click starts running
+- second click stops running
+- four legs visibly move
+- body remains connected
+- deer does not move across the page
+- layout does not shift when animation starts
+- mobile layout still works
+- no console errors appear
+
+
+If there is already an existing click interaction attached to the deer:
+preserve that functionality if possible.
+
+If the deer currently navigates somewhere on click:
+do NOT remove the navigation.
+
+Instead use a safe interaction strategy such as:
+- running animation on hover / pointer enter
+- animation before navigation
+- or integrate the animation without breaking the existing link behaviour
+
+Only replace existing behaviour if there is no important action currently associated with the deer.
+
+
+FINAL OUTPUT:
+
+Please:
+1. modify the existing project files directly
+2. clearly show which files were changed
+3. briefly explain what was changed
+4. mention any asset paths that must exist
+5. do not paste unnecessary unrelated files
