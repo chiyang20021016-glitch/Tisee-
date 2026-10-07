@@ -1,0 +1,164 @@
+I want to redesign ONLY the top website header / navigation area.
+
+Please do not change the rest of the page.
+
+I have added the following rock texture image to the project:
+
+/public/images/rock-texture.jpg
+
+Use this image as the background texture of the website header/navigation area.
+
+VISUAL DIRECTION:
+
+The header should feel like a naturally weathered Tibetan rock-art surface.
+
+I want the visual characteristics to include:
+
+- dark grey-brown natural stone
+- weathered rock surface
+- rough stone grain
+- subtle sand-like particles
+- uneven dark and light speckles
+- subtle erosion
+- natural irregular texture
+- very subtle cracks if they already exist in the source image
+- muted ochre / brown undertones
+
+Do NOT make it look like:
+
+- marble
+- polished stone
+- concrete
+- a game stone wall
+- a cave-game background
+- artificial digital noise
+
+The texture should feel archaeological, natural, ancient and weathered.
+
+
+IMPORTANT:
+
+Only modify the HEADER / NAVBAR area.
+
+Keep:
+
+- the existing header layout
+- the existing logo position
+- the existing navigation structure
+- the existing links
+- the current responsive behavior
+- all existing page content below the header
+
+Do not redesign the entire website.
+
+
+BACKGROUND:
+
+Use the rock image as the header background.
+
+Use:
+
+background-size: cover;
+background-repeat: no-repeat;
+
+Adjust background-position so that visually interesting parts of the rock remain visible.
+
+Do not crop the image too aggressively.
+
+
+OVERLAY:
+
+Add a subtle dark warm overlay above the rock image so the navigation text remains readable.
+
+Use approximately:
+
+rgba(24, 22, 20, 0.45)
+
+The original rock surface should still remain clearly visible.
+
+
+GRAIN:
+
+Add an additional subtle grain layer using CSS pseudo-elements.
+
+The grain should contain:
+
+- very small light particles
+- very small dark particles
+- irregular particle spacing
+- several slightly different particle sizes
+
+Do not use obvious uniform film grain.
+
+The grain should feel embedded in the rock itself.
+
+
+LIGHTING:
+
+Add very subtle irregular radial gradients to simulate natural weathering and uneven rock lighting.
+
+The lighting should remain subtle.
+
+Do not create dramatic cinematic lighting.
+
+
+NAVIGATION TEXT:
+
+Use a warm off-white / sandstone color for navigation text.
+
+Example:
+
+#eee2c9
+
+or
+
+rgba(240, 227, 200, 0.9)
+
+Keep strong readability against the rock.
+
+
+HOVER:
+
+For navigation links, add a very subtle hover effect.
+
+On hover:
+
+- slightly brighten the text
+- reveal a thin underline
+- animate the underline from left to right
+
+The underline should feel subtle, almost like a carved line or rock-art mark.
+
+Do not use large modern UI animations.
+
+
+HEADER DEPTH:
+
+Add a very subtle inner shadow near the bottom edge of the header so that the stone texture has some physical depth.
+
+Do not add strong drop shadows.
+
+
+RESPONSIVE:
+
+Make sure the rock-texture header still works correctly on mobile.
+
+On mobile:
+
+- keep the texture visible
+- keep navigation readable
+- avoid strange background cropping
+- preserve existing responsive navigation behavior
+
+
+TECHNICAL:
+
+Prefer pure CSS.
+
+Do not install additional libraries.
+
+Do not modify unrelated components.
+
+Reuse the existing header component and existing class names whenever possible.
+
+Before editing, inspect the existing Header/Navbar component and adapt this effect to the project's current structure instead of rebuilding the header from scratch.
